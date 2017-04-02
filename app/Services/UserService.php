@@ -67,7 +67,7 @@ class UserService
             return ['code_error' => 500, 'result' => ['error' => 'could_not_create_token']];
         }
 
-        return ['result' => ['token' => $token, 'user' => $this->auth::user()]];
+        return ['result' => ['token' => $token, 'user' => $this->auth::user()->load('type')]];
     }
 
 }

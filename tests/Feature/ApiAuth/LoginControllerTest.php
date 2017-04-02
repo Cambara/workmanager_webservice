@@ -40,6 +40,27 @@ class LoginControllerTest extends TestCase
     {
         $user = ['email' => 'test.unit@test.com', 'password' => '123456', 'name' => 'Test'];
         $this->json('POST','/api/guest/signup',$user)
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertJsonFragment(["email" => 'test.unit@test.com'])
+            ->assertJsonStructure(['token','user']);
+    }
+
+    public function test_signup_without_params()
+    {
+        $this->json('POST', '/api/guest/signup', [])
+            ->assertStatus(500)
+            ->assertJsonStructure(['errors']);
+    }
+
+    public function test_signup_with_exist_email()
+    {
+        $user = ['email' => 'test.unit@test.com','password'=> \Hash::make('123456'), 
+            'name' => 'test', 'fk_user_types' => 1];
+        \App\User::create($user);
+
+        $newUser = ['email' => 'test.unit@test.com', 'password' => '123456', 'name' => 'teste'];
+        $this->json('POST', '/api/guest/signup', $newUser)
+            ->assertStatus(500)
+            ->assertJsonStructure(['errors' => ['email']]);
     }
 }
