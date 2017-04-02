@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use \JWTAuth;
+use \Auth;
 
 class LoginController extends Controller
 {
@@ -27,8 +28,6 @@ class LoginController extends Controller
 
     public function getLogin()
     {
-        if( !$user = JWTAuth::parseToken()->authenticate())
-            return response()->json(['error' => 'deu ruim'], 404);
-        return response()->json(['msg' => 'logado']);
+        return Auth::user();
     }
 }

@@ -14,9 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth.jwt')->get('/user', function (Request $request) {
-    return $request->user();
-
+    return $request->user(); 
 });
 
-Route::middleware('auth.jwt')->get('/my',"ApiAuth\LoginController@getLogin");
+Route::middleware(['auth.jwt','typeuser:admin'])->get('/my',"ApiAuth\LoginController@getLogin");
 Route::post('/login',"ApiAuth\LoginController@login");
