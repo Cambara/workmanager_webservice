@@ -16,7 +16,7 @@ class LoginControllerTest extends TestCase
      */
     public function test_login_invalid_credentials()
     {
-        $this->post('/api/login',['Content-Type' => 'application/json'])
+        $this->post('/api/guest/login',['Content-Type' => 'application/json'])
             ->assertStatus(401);        
     }
 
@@ -29,16 +29,17 @@ class LoginControllerTest extends TestCase
             'name' => 'test', 'fk_user_types' => 1];
         \App\User::create($user);
         
-        $this->json('POST','/api/login',['email' => 'test.unit@test.com','password'=>'123456'])
+        $this->json('POST','/api/guest/login',['email' => 'test.unit@test.com','password'=>'123456'])
             ->assertStatus(200);
     }
 
     /**
      * @return void
      */ 
-    public function test_my()
+    public function test_signup()
     {
-        $this->json('get','/api/my')
+        $user = ['email' => 'test.unit@test.com', 'password' => '123456', 'name' => 'Test'];
+        $this->json('POST','/api/guest/signup',$user)
             ->assertStatus(200);
     }
 }

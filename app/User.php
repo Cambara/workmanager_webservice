@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Validation\Rule;
+use \Validator;
 
 class User extends Authenticatable
 {
@@ -15,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'fk_user_types'
     ];
 
     /**
@@ -27,8 +29,33 @@ class User extends Authenticatable
         'password', 'remember_token','fk_user_types'
     ];
 
+
     public function type()
     {
         return $this->belongsTo('App\UserType', 'fk_user_types', 'id');
     }
+
+    public function isValid()
+    {
+        $validator = Validator::make($this->attributes,[
+            'email' => [
+                'required',
+                'max:255',
+                'email',
+                 Rule::unique('users')->ignore($this->id)
+            ],
+            'name' => 'required|min:3|max:255',
+            'password' => 'required|min:5|max:20'
+        ]);
+
+        $isFails = $validator->fails();
+        
+        if($isFails)
+        {
+            $this->errors = $validator->errors();
+        }
+
+        return !$isFails;
+    }
+
 }

@@ -5,29 +5,41 @@ namespace App\Http\Controllers\ApiAuth;
 use App\Http\Controllers\Controller; 
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
-use \JWTAuth;
-use \Auth;
+use App\Services\UserService;
+use App\User;
 
 class LoginController extends Controller
 {
+    /**
+    * @var UserService
+    */
+    private $userService;
 
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function login(Request $request)
     {
         $credentials = $request->only("email","password");         
-        try{
-            if(!$token = JWTAuth::attempt($credentials)){
-                return response()->json(['error' => 'invalid_credentials'], 401);
-            }
-        } catch(JWTException $e)
-        {
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
-
-        return response()->json(compact('token'));
+        $resp = $this->userService->login($credentials);
+        if(isset($resp['code_error']))
+            return response()->json([$resp['result']], $resp['code_error']);
+        return response()->json($resp['result']);
     }
 
-    public function getLogin()
+    public function signup(Request $request)
     {
-        return Auth::user();
+        $user = $this->userService->add($request->only("email","password","name"));
+        
+        if(!$user instanceof User)
+            return response()->json($user,500);
+
+        $resp = $this->userService->login($request->only("email","password"));
+        
+        if(isset($resp['code_error']))
+            return response()->json([$resp['result']], $resp['code_error']);
+ 
+        return response()->json($resp['result']);
     }
 }

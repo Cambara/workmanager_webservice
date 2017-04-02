@@ -17,5 +17,7 @@ Route::middleware('auth.jwt')->get('/user', function (Request $request) {
     return $request->user(); 
 });
 
-Route::middleware(['auth.jwt','typeuser:admin'])->get('/my',"ApiAuth\LoginController@getLogin");
-Route::post('/login',"ApiAuth\LoginController@login");
+Route::group(['prefix' => '/guest', 'as' => 'guest.'],function(){
+    Route::post('/login',['uses' => 'ApiAuth\LoginController@login', 'as' => 'login']);
+    Route::post('/signup',['uses' => 'ApiAuth\LoginController@signup', 'as' => 'signup']);
+});
