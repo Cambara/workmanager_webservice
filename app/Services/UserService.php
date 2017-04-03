@@ -47,7 +47,7 @@ class UserService
 
         $user->password = Hash::make($params['password']);
 
-        if( $error = $this->dao->add($user) !== true)
+        if(true !== $error = $this->dao->add($user))
             return ['errors' => $error];
         return $user;
     }

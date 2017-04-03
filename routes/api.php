@@ -21,3 +21,9 @@ Route::group(['prefix' => '/guest', 'as' => 'guest.'],function(){
     Route::post('/login',['uses' => 'ApiAuth\LoginController@login', 'as' => 'login']);
     Route::post('/signup',['uses' => 'ApiAuth\LoginController@signup', 'as' => 'signup']);
 });
+
+Route::group(['middleware' => ['auth.jwt','typeuser:admin'], 'prefix' => '/business', 'as' => 'business.'],
+	function(){
+		Route::post('/',['uses' => 'Business\BusinessController@store', 'as' => 'store']);
+		Route::put('/{id}',['uses' => 'Business\BusinessController@update', 'as' => 'store']);
+});

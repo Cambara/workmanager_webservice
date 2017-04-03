@@ -17,7 +17,7 @@ class UserRepository
 
     /**
     * @param array $params
-    * @return User|string
+    * @return bool|string
     */
     public function add(User $user)
     {
