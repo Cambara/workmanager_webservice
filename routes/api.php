@@ -22,8 +22,12 @@ Route::group(['prefix' => '/guest', 'as' => 'guest.'],function(){
     Route::post('/signup',['uses' => 'ApiAuth\LoginController@signup', 'as' => 'signup']);
 });
 
-Route::group(['middleware' => ['auth.jwt','typeuser:admin'], 'prefix' => '/business', 'as' => 'business.'],
-	function(){
+Route::group(['middleware' => ['auth.jwt'], 'prefix' => '/business', 'as' => 'business.'],function(){
+	Route::group(['middleware' => ['typeuser:admin']],function(){
 		Route::post('/',['uses' => 'Business\BusinessController@store', 'as' => 'store']);
 		Route::put('/{id}',['uses' => 'Business\BusinessController@update', 'as' => 'store']);
+		Route::delete('/{id}',['uses' => 'Business\BusinessController@destroy', 'as' => 'destroy']);
+	});
+
+	Route::get('/{limit?}',['uses' => 'Business\BusinessController@index', 'as' => 'index']);
 });

@@ -79,4 +79,27 @@ class BusinessControllerTest extends TestCase
             ->assertStatus(400)
             ->assertJsonFragment(['cnpj']);
     }
+
+    /**
+    * @return void
+    */
+    public function test_remove_business()
+    {
+        $b = ['cnpj' => '89.366.245/0001-40','company_name' => 'Test Unit ltda', 'nickname' => 'Test Unit'];
+        $business = \App\Business::create($b);
+
+        $this->json('DELETE', '/api/business/'.$business->id)
+            ->assertStatus(200)
+            ->assertJsonFragment(['msg']);
+    }
+
+    public function test_list_business()
+    {
+        $b = ['cnpj' => '89.366.245/0001-40','company_name' => 'Test Unit ltda', 'nickname' => 'Test Unit'];
+        $business = \App\Business::create($b);
+
+        $this->json('GET', '/api/business/')
+            ->assertStatus(200)
+            ->assertJsonFragment(['data']);        
+    }
 }

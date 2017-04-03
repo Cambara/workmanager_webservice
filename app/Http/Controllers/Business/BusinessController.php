@@ -33,4 +33,20 @@ class BusinessController extends Controller
             return response()->json([$resp['result']], $resp['status_code']);
         return response()->json($resp['result']);
     }
+
+    public function destroy($id)
+    {
+        $resp = $this->businessService->delete($id);
+        if(isset($resp['status_code']))
+            return response()->json([$resp['result']], $resp['status_code']);
+        return response()->json($resp['result']);
+    }
+
+    public function index($limit = 20)
+    {
+        $resp = $this->businessService->list($limit);
+        if(isset($resp['status_code']))
+            return response()->json($resp['result'], $resp['status_code']);
+        return response()->json($resp['result']);
+    }
 }
