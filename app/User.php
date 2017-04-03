@@ -34,7 +34,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\UserType', 'fk_user_types', 'id');
     }
-
+    
     public function isValid()
     {
         $validator = Validator::make($this->attributes,[
