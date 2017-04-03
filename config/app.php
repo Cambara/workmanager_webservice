@@ -176,7 +176,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //Config token auth
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        //Validate
+        LaravelLegends\PtBrValidator\ValidatorProvider::class,
     ],
 
     /*
