@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Business;
+use App\WorkTable;
 
-class BusinessRepository
+class WorkTableRepository
 {
     /**
-    * @var Business $dao
+    * @var WorkTable $dao
     */
     private $dao;
-    public function __construct(Business $dao)
+    public function __construct(WorkTable $dao)
     {
         $this->dao = $dao;
     }
@@ -19,10 +19,10 @@ class BusinessRepository
     * @param array $params
     * @return bool|string
     */
-    public function add(Business $business)
+    public function add(WorkTable $workTable)
     {
         try{
-            return $business->save();
+            return $workTable->save();
         }catch(\Exception $e )
         {
             return $e->getMessage();
@@ -36,13 +36,13 @@ class BusinessRepository
     */
     public function update($id, $params)
     {
-        $business = $this->dao->find($id);
-        if(!$business) return "Business not found";
+        $workTable = $this->dao->find($id);
+        if(!$workTable) return "worktable not found";
 
-        $business->fill($params);
+        $workTable->fill($params);
 
         try{
-            return $business->save();
+            return $workTable->save();
         }catch(\Exception $e)
         {
             return $e->getMessage();
@@ -55,11 +55,11 @@ class BusinessRepository
     */
     public function delete($id)
     {
-        $business = $this->dao->find($id);
-        if(!$business) return "Business not found";
+        $workTable = $this->dao->find($id);
+        if(!$workTable) return "worktable not found";
 
         try{
-            return $business->delete();
+            return $workTable->delete();
         }catch(\Exception $e)
         {
             return $e->getMessage();
@@ -73,5 +73,14 @@ class BusinessRepository
         }catch(\Exception $e){
             return $e->getMessage();
         }
+    }
+
+    public function find($id)
+    {
+        try{
+            return $this->dao->with(['user','business'])->find($id);
+        }catch(\Exception $e){
+            return $e->getMessage();
+        }    
     }
 }

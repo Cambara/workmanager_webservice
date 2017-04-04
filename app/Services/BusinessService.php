@@ -67,7 +67,7 @@ class BusinessService
         if($limit < 1)
             return ['result' => ['errors' => 'Limit is greater than 0'], 'status_code' => 400];
 
-        if(is_string($result = $businesses = $this->dao->list($limit)))
+        if(is_string($result = $this->dao->list($limit)))
             return ['result' => ['errors' => $result], 'status_code' => 500];
         return ['result' => [$result]];
     }

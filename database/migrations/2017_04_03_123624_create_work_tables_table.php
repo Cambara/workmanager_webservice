@@ -21,7 +21,7 @@ class CreateWorkTablesTable extends Migration
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
             $table->dateTime('time_begin');
             $table->dateTime('time_end');
-            $table->timestamp('time_lunch');
+            $table->time('time_lunch');
             $table->text('tasks');
             $table->timestamps();
         });
